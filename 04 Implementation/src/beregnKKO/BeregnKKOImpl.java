@@ -3,9 +3,12 @@ package beregnKKO;
 import entities.*;
 import entities.exceptions.*;
 
+import java.util.ArrayList;
+
 public class BeregnKKOImpl implements BeregnKKO, Observable {
     ObserverManager observerManager;
     KKO kko;
+    double sum = 0;
 
     public BeregnKKOImpl() {
         observerManager = newObserverManager();
@@ -63,9 +66,12 @@ public class BeregnKKOImpl implements BeregnKKO, Observable {
         KKO nykko = new KKOImpl(navn, foraeldersNavn);
         kko.tilfoejKKO(nykko);
         observerManager.notificerObservere(this);
-
     }
 
+    @Override
+    public void angivSum(double sum) {
+        this.sum = sum;
+    }
 
     @Override
     public void tilmeldObserver(Observer observer) {
@@ -79,5 +85,23 @@ public class BeregnKKOImpl implements BeregnKKO, Observable {
 
     protected ObserverManager newObserverManager() {
         return new ObserverManagerImpl();
+    }
+
+    @Override
+    public double hentAlleBeloeb() {
+        hentAlleBeloeb(kko);
+        return sum;
+    }
+
+    private void hentAlleBeloeb(KKO kko) {
+        for (KKO underKKO : kko.hentEfterfoelgere()) {
+            sum += underKKO.hentBeloeb();
+            if (underKKO.hentEfterfoelgere().size() > 0) {
+                for (KKO underUnderKKO : underKKO.hentEfterfoelgere()) {
+                    sum += underUnderKKO.hentBeloeb();
+                    hentAlleBeloeb(underUnderKKO);
+                }
+            }
+        }
     }
 }

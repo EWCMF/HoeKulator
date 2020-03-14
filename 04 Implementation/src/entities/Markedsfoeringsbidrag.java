@@ -1,7 +1,7 @@
 package entities;
 
-
-public interface Indtjeningsbidrag extends Observable {
+public interface Markedsfoeringsbidrag extends Observable {
     void angivBeloeb(double beloeb);
     double hentBeloeb();
+
 }

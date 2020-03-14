@@ -1,8 +1,16 @@
 package start;
 
+import beregnKKO.BeregnKKO;
+import beregnKKO.BeregnKKOImpl;
 import beregnafskrivning.BeregnAfskrivningController;
 import beregnafskrivning.BeregnAfskrivningImpl;
 import beregnbruttofortjeneste.BeregnBruttofortjenesteImpl;
+import beregnindtjeningsbidrag.BeregnIndtjeningsbidrag;
+import beregnindtjeningsbidrag.BeregnIndtjeningsbidragController;
+import beregnindtjeningsbidrag.BeregnIndtjeningsbidragImpl;
+import beregnmarkedsfoeringsbidrag.BeregnMarkedsfoeringsbidrag;
+import beregnmarkedsfoeringsbidrag.BeregnMarkedsfoeringsbidragImpl;
+import beregnmarkedsfoeringsbidrag.BeregnMarkedsfoeringsbidragController;
 import beregnomsaetning.BeregnOmsaetningController;
 import beregnomsaetning.BeregnOmsaetningImpl;
 import beregnresultat.BeregnResultat;
@@ -14,12 +22,12 @@ import beregnresultatfoerskat.BeregnRenteomkostningerController;
 import beregnresultatfoerskat.BeregnResultatFoerSkat;
 import beregnresultatfoerskat.BeregnResultatFoerSkatImpl;
 import beregnbruttofortjeneste.BeregnBruttofortjenesteController;
+import beregnsso.BeregnSSO;
 import beregnvareforbrug.BeregnVareforbrugController;
 import beregnvareforbrug.BeregnVareforbrugImpl;
 import entities.Afskrivning;
 import entities.Indtjeningsbidrag;
 import entities.IndtjeningsbidragImpl;
-import entities.VareforbrugImpl;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -36,40 +44,26 @@ public class GrundUIController {
     private BeregnOmsaetningImpl beregnOmsaetning;
     private BeregnVareforbrugImpl beregnVareforbrug;
     private BeregnBruttofortjenesteImpl beregnBruttofortjeneste;
+    private BeregnSSO beregnSSO;
+    private BeregnMarkedsfoeringsbidrag beregnMarkedsfoeringsbidrag;
+    private BeregnKKO beregnKKO;
+    private BeregnIndtjeningsbidrag beregnIndtjeningsbidrag;
     private BeregnAfskrivningImpl beregnAfskrivning;
     private BeregnResultatFoerRenterImpl beregnResultatFoerRenter;
     private BeregnResultatFoerSkat beregnResultatFoerSkat;
     private BeregnResultat beregnResultat;
 
     @FXML
-    private Label omsaetningResultatLabel;
+    private Label omsaetningResultatLabel, vareforbrugResultatLabel, bruttofortjenesteResultatLabel,
+            markedsfoeringsbidragResultatLabel, kkoResultatLabel, afskrivningResultatLabel,
+            indtjeningsbidragResultatLabel, resultatFoerRenterResultatLabel, renteindtaegterResultatLabel,
+            renteomkostningerResultatLabel, resultatFoerSkatResultatLabel, skatteprocentResultatLabel,
+            resultatResultatLabel;
 
     @FXML
-    private Label vareforbrugResultatLabel;
-
-    @FXML
-    private Label afskrivningResultatLabel;
-  
-    @FXML
-    private Label bruttofortjenesteResultatLabel;
-
-    @FXML
-    private Label indtjeningsbidragResultatLabel;
-
-    @FXML
-    private Label resultatFoerSkatResultatLabel;
-
-    @FXML
-    private Label resultatFoerRenterResultatLabel;
-
-    @FXML
-    private Label renteindtaegterResultatLabel, renteomkostningerResultatLabel;
-
-    @FXML
-    private Label skatteprocentResultatLabel, resultatResultatLabel;
-
-    @FXML
-    private Pane omsaetningPane, vareforbrugPane, bruttofortjenestePane, afskrivningPane, renteindtaegterPane, renteomkostningerPane, skatteprocentPane;
+    private Pane omsaetningPane, vareforbrugPane, bruttofortjenestePane,
+            afskrivningPane, indtjeningsbidragPane, renteindtaegterPane,
+            renteomkostningerPane, skatteprocentPane, kkoPane, markedsfoeringsbidragPane;
 
     public GrundUIController() {
     }
@@ -78,6 +72,13 @@ public class GrundUIController {
         beregnOmsaetning = new BeregnOmsaetningImpl();
         beregnVareforbrug = new BeregnVareforbrugImpl();
         beregnBruttofortjeneste = new BeregnBruttofortjenesteImpl();
+        beregnMarkedsfoeringsbidrag = new BeregnMarkedsfoeringsbidragImpl();
+        beregnMarkedsfoeringsbidrag.angivBruttofortjeneste(beregnBruttofortjeneste.getBruttofortjeneste());
+        beregnMarkedsfoeringsbidrag.angivSSO(beregnSSO);
+        beregnKKO = new BeregnKKOImpl();
+        beregnIndtjeningsbidrag = new BeregnIndtjeningsbidragImpl();
+        beregnIndtjeningsbidrag.angivMarkedsfoeringsBidrag(beregnMarkedsfoeringsbidrag.hentMarkedsfoeringsbidrag());
+        beregnIndtjeningsbidrag.angivKKO(beregnKKO);
         afskrivninger = new ArrayList<>();
         beregnAfskrivning = new BeregnAfskrivningImpl();
         beregnResultatFoerRenter = new BeregnResultatFoerRenterImpl();
@@ -86,6 +87,8 @@ public class GrundUIController {
         loadOmsaetning();
         loadVareforbrug();
         loadBruttofortjeneste();
+        loadMarkedsfoeringsbidrag();
+        loadIndtjeningsbidrag();
         loadAfskrivning();
         loadRenteintaegter();
         loadRenteomkostninger();
@@ -117,6 +120,24 @@ public class GrundUIController {
         beregnVareforbrugController.setGrundUIController(this);
         beregnVareforbrugController.setBeregnVareforbrug(beregnVareforbrug);
         vareforbrugPane.getChildren().add(node);
+    }
+
+    public void loadMarkedsfoeringsbidrag() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../beregnmarkedsfoeringsbidrag/Beregn_markedsfoeringsbidrag.fxml"));
+        Node node = fxmlLoader.load();
+        BeregnMarkedsfoeringsbidragController beregnMarkedsfoeringsbidragController = fxmlLoader.getController();
+        beregnMarkedsfoeringsbidragController.setGrundUIController(this);
+        beregnMarkedsfoeringsbidragController.setBeregnMarkedsfoeringsbidrag(beregnMarkedsfoeringsbidrag);
+        markedsfoeringsbidragPane.getChildren().add(node);
+    }
+
+    public void loadIndtjeningsbidrag() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../beregnindtjeningsbidrag/Beregn_indtjeningsbidrag.fxml"));
+        Node node = fxmlLoader.load();
+        BeregnIndtjeningsbidragController beregnIndtjeningsbidragController = fxmlLoader.getController();
+        beregnIndtjeningsbidragController.setGrundUIController(this);
+        beregnIndtjeningsbidragController.setBeregnIndtjeningsbidrag(beregnIndtjeningsbidrag);
+        indtjeningsbidragPane.getChildren().add(node);
     }
 
     public void loadAfskrivning() throws IOException{
@@ -225,9 +246,36 @@ public class GrundUIController {
         opdaterResultatFoerRenter();
     }
 
+    public void opdaterMarkedsfoeringsbidrag() {
+        double tal = beregnMarkedsfoeringsbidrag.hentMarkedsfoeringsbidrag().hentBeloeb();
+        String formatted = String.format("%.2f", tal);
+        markedsfoeringsbidragResultatLabel.setText(formatted);
+
+    }
+
+    public void opdaterKKO() {
+        double tal = beregnKKO.hentAlleBeloeb();
+        String formatted = String.format("%.2f", tal);
+        kkoResultatLabel.setText(formatted);
+    }
+
+    public void opdaterIndtjeningsbidrag() {
+        beregnIndtjeningsbidrag.beregnIndtjeningsbidrag();
+        double tal = beregnIndtjeningsbidrag.hentIndtjeningsbidrag().hentBeloeb();
+        String formatted = String.format("%.2f", tal);
+        indtjeningsbidragResultatLabel.setText(formatted);
+        opdaterResultatFoerRenter();
+    }
+
     public void opdaterResultatFoerRenter() {
-        Indtjeningsbidrag indtjeningsbidrag = new IndtjeningsbidragImpl();
-        indtjeningsbidrag.angivBeloeb(0);
+        Indtjeningsbidrag indtjeningsbidrag;
+        if (beregnIndtjeningsbidrag.hentIndtjeningsbidrag() != null) {
+            indtjeningsbidrag = beregnIndtjeningsbidrag.hentIndtjeningsbidrag();
+        }
+        else {
+            indtjeningsbidrag = new IndtjeningsbidragImpl();
+            indtjeningsbidrag.angivBeloeb(0);
+        }
         beregnResultatFoerRenter.angivAfskrivningerOgIndtjeningsbidrag(beregnAfskrivning.hentAfskrivninger(), indtjeningsbidrag);
         double tal = beregnResultatFoerRenter.hentResultat().hentResultatFoerRenter();
         String formatted = String.format("%.2f", tal);

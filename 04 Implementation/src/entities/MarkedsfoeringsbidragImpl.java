@@ -1,17 +1,17 @@
 package entities;
 
-public class IndtjeningsbidragImpl implements Indtjeningsbidrag {
-    private double beloeb;
+public class MarkedsfoeringsbidragImpl implements Markedsfoeringsbidrag {
     private ObserverManager observerManager;
+    private double beloeb;
 
-    public IndtjeningsbidragImpl(){
+    public MarkedsfoeringsbidragImpl() {
         observerManager = newObserverManager();
     }
+
 
     @Override
     public void angivBeloeb(double beloeb) {
         this.beloeb = beloeb;
-        observerManager.notificerObservere(this);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class IndtjeningsbidragImpl implements Indtjeningsbidrag {
 
     @Override
     public void afmeldObserver(Observer observer) {
-        observerManager.afmeldObserver(observer);
+        afmeldObserver(observer);
     }
 
     protected ObserverManager newObserverManager() {

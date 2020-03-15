@@ -23,11 +23,13 @@ import beregnresultatfoerskat.BeregnResultatFoerSkat;
 import beregnresultatfoerskat.BeregnResultatFoerSkatImpl;
 import beregnbruttofortjeneste.BeregnBruttofortjenesteController;
 import beregnsso.BeregnSSO;
+import beregnsso.BeregnSSOImpl;
 import beregnvareforbrug.BeregnVareforbrugController;
 import beregnvareforbrug.BeregnVareforbrugImpl;
 import entities.Afskrivning;
 import entities.Indtjeningsbidrag;
 import entities.IndtjeningsbidragImpl;
+import entities.exceptions.NegativBeloebException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -55,15 +57,16 @@ public class GrundUIController {
 
     @FXML
     private Label omsaetningResultatLabel, vareforbrugResultatLabel, bruttofortjenesteResultatLabel,
-            markedsfoeringsbidragResultatLabel, kkoResultatLabel, afskrivningResultatLabel,
-            indtjeningsbidragResultatLabel, resultatFoerRenterResultatLabel, renteindtaegterResultatLabel,
-            renteomkostningerResultatLabel, resultatFoerSkatResultatLabel, skatteprocentResultatLabel,
-            resultatResultatLabel;
+            ssoResultatLabel, markedsfoeringsbidragResultatLabel, kkoResultatLabel,
+            afskrivningResultatLabel, indtjeningsbidragResultatLabel, resultatFoerRenterResultatLabel,
+            renteindtaegterResultatLabel, renteomkostningerResultatLabel, resultatFoerSkatResultatLabel,
+            skatteprocentResultatLabel, resultatResultatLabel;
 
     @FXML
     private Pane omsaetningPane, vareforbrugPane, bruttofortjenestePane,
             afskrivningPane, indtjeningsbidragPane, renteindtaegterPane,
-            renteomkostningerPane, skatteprocentPane, kkoPane, markedsfoeringsbidragPane;
+            renteomkostningerPane, skatteprocentPane, kkoPane, markedsfoeringsbidragPane,
+            ssoPane;
 
     public GrundUIController() {
     }
@@ -72,8 +75,9 @@ public class GrundUIController {
         beregnOmsaetning = new BeregnOmsaetningImpl();
         beregnVareforbrug = new BeregnVareforbrugImpl();
         beregnBruttofortjeneste = new BeregnBruttofortjenesteImpl();
+        beregnSSO = new BeregnSSOImpl();
         beregnMarkedsfoeringsbidrag = new BeregnMarkedsfoeringsbidragImpl();
-        beregnMarkedsfoeringsbidrag.angivBruttofortjeneste(beregnBruttofortjeneste.getBruttofortjeneste());
+        beregnMarkedsfoeringsbidrag.angivBruttofortjeneste(beregnBruttofortjeneste.hentBruttofortjeneste());
         beregnMarkedsfoeringsbidrag.angivSSO(beregnSSO);
         beregnKKO = new BeregnKKOImpl();
         beregnIndtjeningsbidrag = new BeregnIndtjeningsbidragImpl();
@@ -191,7 +195,7 @@ public class GrundUIController {
 
     @FXML
     public void tilfoejBruttofortjenesteTilResultatBudget(){
-        bruttofortjenesteResultatLabel.setText(String.valueOf(beregnBruttofortjeneste.getBruttofortjeneste().hentBruttofortjeneste()));
+        bruttofortjenesteResultatLabel.setText(String.valueOf(beregnBruttofortjeneste.hentBruttofortjeneste().hentBeloeb()));
     }
 
     @FXML
@@ -245,12 +249,41 @@ public class GrundUIController {
         afskrivningResultatLabel.setText(formatted);
         opdaterResultatFoerRenter();
     }
+    public void opdaterOmsaetning() {
+
+    }
+
+    public void opdaterVareforbrug() {
+
+    }
+
+    public void advarselOmsaetningOgVareforbrug() {
+        omsaetningResultatLabel.setText(omsaetningResultatLabel.getText() + "!");
+        vareforbrugResultatLabel.setText(vareforbrugResultatLabel.getText() + "!");
+    }
+
+    public void opdaterBruttofortjeneste() {
+        double tal = beregnBruttofortjeneste.hentBruttofortjeneste().hentBeloeb();
+        String formatted = String.format("%.2f", tal);
+        bruttofortjenesteResultatLabel.setText(formatted);
+    }
+
+    public void opdaterSSO() {
+        double tal = beregnSSO.hentSum();
+        String formatted = String.format("%.2f", tal);
+        ssoResultatLabel.setText(formatted);
+    }
+
+    public void advarselBruttofortjenesteOgSSO() {
+        ssoResultatLabel.setText(ssoResultatLabel.getText() + "!");
+        bruttofortjenesteResultatLabel.setText(bruttofortjenesteResultatLabel.getText() + "!");
+    }
 
     public void opdaterMarkedsfoeringsbidrag() {
         double tal = beregnMarkedsfoeringsbidrag.hentMarkedsfoeringsbidrag().hentBeloeb();
         String formatted = String.format("%.2f", tal);
         markedsfoeringsbidragResultatLabel.setText(formatted);
-
+        opdaterIndtjeningsbidrag();
     }
 
     public void opdaterKKO() {

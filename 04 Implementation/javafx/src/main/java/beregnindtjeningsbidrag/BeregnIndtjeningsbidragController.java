@@ -25,6 +25,7 @@ public class BeregnIndtjeningsbidragController {
         grundUIController.opdaterIndtjeningsbidrag();
         grundUIController.opdaterKKO();
         grundUIController.opdaterMarkedsfoeringsbidrag();
+        grundUIController.advarselBruttofortjenesteOgSSO();
     }
 
     public void setBeregnIndtjeningsbidrag(BeregnIndtjeningsbidrag beregnIndtjeningsbidrag) {

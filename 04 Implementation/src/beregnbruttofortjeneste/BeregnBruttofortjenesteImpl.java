@@ -22,7 +22,7 @@ public class BeregnBruttofortjenesteImpl implements BeregnBruttofortjeneste {
     }
 
     @Override
-    public Bruttofortjeneste getBruttofortjeneste() {
+    public Bruttofortjeneste hentBruttofortjeneste() {
         return bruttofortjeneste;
     }
 }

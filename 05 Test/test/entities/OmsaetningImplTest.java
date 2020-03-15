@@ -150,12 +150,6 @@ class OmsaetningImplTest {
         }
 
         @Override
-        public double hentBruttofortjeneste() {
-
-            return 0;
-        }
-
-        @Override
         public void tilmeldObserver(Observer observer) {
 
         }

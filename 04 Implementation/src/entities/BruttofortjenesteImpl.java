@@ -21,23 +21,21 @@ public class BruttofortjenesteImpl implements Bruttofortjeneste, Observable {
         this.beloeb = beloeb;
         observerManager.notificerObservere(this);
     }
+
+    public void beregnBeloeb() {
+        beloeb = omsaetning.hentBeloeb() - vareforbrug.hentBeloeb();
+        observerManager.notificerObservere(this);
+    }
   
     @Override
     public void anvendOmsaetningOgVareforbrug(Omsaetning omsaetning, Vareforbrug vareforbrug) {
         this.omsaetning = omsaetning;
         this.vareforbrug = vareforbrug;
-
         observerManager.notificerObservere(this);
     }
 
     @Override
     public double hentBeloeb() {
-        return beloeb;
-    }
-
-    @Override
-    public double hentBruttofortjeneste() {
-        this.beloeb = omsaetning.hentBeloeb() - vareforbrug.hentBeloeb();
         return beloeb;
     }
 

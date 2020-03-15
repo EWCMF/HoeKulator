@@ -28,11 +28,11 @@ public class BeregnBruttofortjenesteController {
 
     public void setBeregnBruttofortjeneste(BeregnBruttofortjenesteImpl beregnBruttofortjeneste) {
         this.beregnBruttofortjeneste = beregnBruttofortjeneste;
-        this.beregnBruttofortjeneste.getBruttofortjeneste().tilmeldObserver(new Observer() {
+        this.beregnBruttofortjeneste.hentBruttofortjeneste().tilmeldObserver(new Observer() {
             @Override
             public void opdater(Observable observable) {
                 if (observable instanceof Bruttofortjeneste) {
-                    double changed = ((Bruttofortjeneste) observable).hentBruttofortjeneste();
+                    double changed = ((Bruttofortjeneste) observable).hentBeloeb();
                     bruttofortjenesteTf.setText(String.valueOf(changed));
                 }
             }

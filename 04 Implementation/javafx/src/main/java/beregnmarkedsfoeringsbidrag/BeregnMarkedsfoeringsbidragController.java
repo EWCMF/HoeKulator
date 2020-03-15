@@ -23,6 +23,10 @@ public class BeregnMarkedsfoeringsbidragController {
         double bruttofortjenesteInput = Double.parseDouble(bruttofortjenesteTf.getText());
         double ssoInput = Double.parseDouble(ssoTf.getText());
         beregnMarkedsfoeringsbidrag.angivBruttofortjenesteOgSSO(bruttofortjenesteInput, ssoInput);
+        grundUIController.opdaterMarkedsfoeringsbidrag();
+        grundUIController.opdaterSSO();
+        grundUIController.opdaterBruttofortjeneste();
+        grundUIController.advarselOmsaetningOgVareforbrug();
     }
 
     public void setBeregnMarkedsfoeringsbidrag(BeregnMarkedsfoeringsbidrag beregnMarkedsfoeringsbidrag) {

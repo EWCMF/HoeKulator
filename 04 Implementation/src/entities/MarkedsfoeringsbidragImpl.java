@@ -12,6 +12,7 @@ public class MarkedsfoeringsbidragImpl implements Markedsfoeringsbidrag {
     @Override
     public void angivBeloeb(double beloeb) {
         this.beloeb = beloeb;
+        observerManager.notificerObservere(this);
     }
 
     @Override

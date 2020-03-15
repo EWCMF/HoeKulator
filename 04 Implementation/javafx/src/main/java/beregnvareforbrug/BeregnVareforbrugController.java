@@ -1,6 +1,5 @@
 package beregnvareforbrug;
 
-import entities.Indkoebspris;
 import entities.Observable;
 import entities.Observer;
 import entities.Vareforbrug;
@@ -114,13 +113,13 @@ public class BeregnVareforbrugController {
 
     public void setBeregnVareforbrug(BeregnVareforbrugImpl beregnVareforbrug){
         this.beregnVareforbrug = beregnVareforbrug;
-        this.beregnVareforbrug.getVareforbrug().tilmeldObserver(new Observer() {
+        this.beregnVareforbrug.hentVareforbrug().tilmeldObserver(new Observer() {
             @Override
             public void opdater(Observable observable) {
                 if (observable instanceof Vareforbrug){
                     double changed = ((Vareforbrug) observable).hentVareforbrug();
                     vareforbrugTf.setText(String.valueOf(changed));
-                    grundUIController.tilfoejVareforbrugTilResultatbudget();
+                    grundUIController.opdaterVareforbrug();
                 }
             }
         });

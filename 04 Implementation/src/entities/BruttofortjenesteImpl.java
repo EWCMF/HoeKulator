@@ -14,6 +14,16 @@ public class BruttofortjenesteImpl implements Bruttofortjeneste, Observable {
 
 
     @Override
+    public void angivOmsaetning(Omsaetning omsaetning) {
+        this.omsaetning = omsaetning;
+    }
+
+    @Override
+    public void angivVareforbrug(Vareforbrug vareforbrug) {
+        this.vareforbrug = vareforbrug;
+    }
+
+    @Override
     public void angivBeloeb(double beloeb) throws NegativBeloebException {
         if (beloeb < 0) {
             throw new NegativBeloebException("Beløbet må ikke være negativt");
@@ -22,6 +32,7 @@ public class BruttofortjenesteImpl implements Bruttofortjeneste, Observable {
         observerManager.notificerObservere(this);
     }
 
+    @Override
     public void beregnBeloeb() {
         beloeb = omsaetning.hentBeloeb() - vareforbrug.hentBeloeb();
         observerManager.notificerObservere(this);

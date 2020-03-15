@@ -49,7 +49,7 @@ public class BeregnVareforbrugImpl implements BeregnVareforbrug{
     }
 
     @Override
-    public Vareforbrug getVareforbrug() {
+    public Vareforbrug hentVareforbrug() {
         return vareforbrug;
     }
 }

@@ -29,7 +29,6 @@ import beregnvareforbrug.BeregnVareforbrugImpl;
 import entities.Afskrivning;
 import entities.Indtjeningsbidrag;
 import entities.IndtjeningsbidragImpl;
-import entities.exceptions.NegativBeloebException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -75,6 +74,8 @@ public class GrundUIController {
         beregnOmsaetning = new BeregnOmsaetningImpl();
         beregnVareforbrug = new BeregnVareforbrugImpl();
         beregnBruttofortjeneste = new BeregnBruttofortjenesteImpl();
+        beregnBruttofortjeneste.angivOmsaetning(beregnOmsaetning.hentOmsaetning());
+        beregnBruttofortjeneste.angivVareforbrug(beregnVareforbrug.hentVareforbrug());
         beregnSSO = new BeregnSSOImpl();
         beregnMarkedsfoeringsbidrag = new BeregnMarkedsfoeringsbidragImpl();
         beregnMarkedsfoeringsbidrag.angivBruttofortjeneste(beregnBruttofortjeneste.hentBruttofortjeneste());
@@ -184,21 +185,6 @@ public class GrundUIController {
     }
 
     @FXML
-    public void tilfoejOmsaetningTilResultatBudget(){
-        omsaetningResultatLabel.setText(String.valueOf(beregnOmsaetning.getOmsaetning().hentOmsaetning()));
-    }
-
-    @FXML
-    public void tilfoejVareforbrugTilResultatbudget(){
-        vareforbrugResultatLabel.setText(String.valueOf(beregnVareforbrug.getVareforbrug().hentVareforbrug()));
-    }
-
-    @FXML
-    public void tilfoejBruttofortjenesteTilResultatBudget(){
-        bruttofortjenesteResultatLabel.setText(String.valueOf(beregnBruttofortjeneste.hentBruttofortjeneste().hentBeloeb()));
-    }
-
-    @FXML
     public void tilfoejNyAfskrivning() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../beregnafskrivning/Beregn_afskrivning.fxml"));
         Node node = fxmlLoader.load();
@@ -216,7 +202,7 @@ public class GrundUIController {
     }
 
     @FXML
-    public void fjernAfkrivning(Node node, String string) throws IOException{
+    public void fjernAfkrivning(Node node, String string) {
         if (afskrivninger.size() <= 0){
             return;
         }
@@ -250,22 +236,30 @@ public class GrundUIController {
         opdaterResultatFoerRenter();
     }
     public void opdaterOmsaetning() {
-
+        double tal = beregnOmsaetning.hentOmsaetning().hentBeloeb();
+        String formatted = String.format("%.2f", tal);
+        omsaetningResultatLabel.setText(formatted);
+        opdaterBruttofortjeneste();
     }
 
     public void opdaterVareforbrug() {
-
+        double tal = beregnVareforbrug.hentVareforbrug().hentBeloeb();
+        String formatted = String.format("%.2f", tal);
+        vareforbrugResultatLabel.setText(formatted);
+        opdaterBruttofortjeneste();
     }
 
     public void advarselOmsaetningOgVareforbrug() {
-        omsaetningResultatLabel.setText(omsaetningResultatLabel.getText() + "!");
-        vareforbrugResultatLabel.setText(vareforbrugResultatLabel.getText() + "!");
+//        omsaetningResultatLabel.setText(omsaetningResultatLabel.getText() + "!");
+//        vareforbrugResultatLabel.setText(vareforbrugResultatLabel.getText() + "!");
     }
 
     public void opdaterBruttofortjeneste() {
+        beregnBruttofortjeneste.beregnBruttofortjeneste();
         double tal = beregnBruttofortjeneste.hentBruttofortjeneste().hentBeloeb();
         String formatted = String.format("%.2f", tal);
         bruttofortjenesteResultatLabel.setText(formatted);
+        opdaterIndtjeningsbidrag();
     }
 
     public void opdaterSSO() {
@@ -275,8 +269,8 @@ public class GrundUIController {
     }
 
     public void advarselBruttofortjenesteOgSSO() {
-        ssoResultatLabel.setText(ssoResultatLabel.getText() + "!");
-        bruttofortjenesteResultatLabel.setText(bruttofortjenesteResultatLabel.getText() + "!");
+//        ssoResultatLabel.setText(ssoResultatLabel.getText() + "!");
+//        bruttofortjenesteResultatLabel.setText(bruttofortjenesteResultatLabel.getText() + "!");
     }
 
     public void opdaterMarkedsfoeringsbidrag() {

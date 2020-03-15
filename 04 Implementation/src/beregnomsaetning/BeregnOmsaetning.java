@@ -9,5 +9,5 @@ public interface BeregnOmsaetning {
     void angivBruttofortjenesteOgVareforbrug(double bruttofortjeneste, double vareforbrug) throws NegativBeloebException;
     void angivAfsaetningOgSalgspris(double salgspris, int afsaetning) throws NegativAntalException, NegativPrisException;
     void angivPrimoAarsomsaetningOgProcentstigning(double primoAarsomsaetning, double procentstigning);
-    public Omsaetning getOmsaetning();
+    Omsaetning hentOmsaetning();
 }

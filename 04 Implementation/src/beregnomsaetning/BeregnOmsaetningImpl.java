@@ -45,7 +45,7 @@ public class BeregnOmsaetningImpl implements BeregnOmsaetning {
         this.omsaetning.anvendPrimoAarsomsaetningOgProcentstigning(this.primoAarsomsaetning, this.procentstigning);
     }
 
-    public Omsaetning getOmsaetning() {
+    public Omsaetning hentOmsaetning() {
         return omsaetning;
     }
 }

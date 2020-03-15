@@ -55,7 +55,7 @@ public class BeregnOmsaetningController {
 
     private void aendreMetode(String metode) throws IOException {
         FXMLLoader loader = null;
-        Node node = null;
+        Node node;
         switch (metode) {
             case "Afsætning og salgspris":
                 loader = new FXMLLoader(getClass().getResource("Afsaetning_og_salgspris.fxml"));
@@ -108,13 +108,13 @@ public class BeregnOmsaetningController {
 
     public void setBeregnOmsaetning(BeregnOmsaetningImpl beregnOmsaetning) {
         this.beregnOmsaetning = beregnOmsaetning;
-        this.beregnOmsaetning.getOmsaetning().tilmeldObserver(new Observer() {
+        this.beregnOmsaetning.hentOmsaetning().tilmeldObserver(new Observer() {
             @Override
             public void opdater(Observable observable) {
                 if (observable instanceof Omsaetning) {
                     double changed = ((Omsaetning) observable).hentOmsaetning();
                     omsaetningTf.setText(String.valueOf(changed));
-                    grundUIController.tilfoejOmsaetningTilResultatBudget();
+                    grundUIController.opdaterOmsaetning();
                 }
             }
         });

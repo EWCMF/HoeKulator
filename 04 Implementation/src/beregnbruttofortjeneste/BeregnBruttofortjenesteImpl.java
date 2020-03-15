@@ -18,7 +18,25 @@ public class BeregnBruttofortjenesteImpl implements BeregnBruttofortjeneste {
     public void angivOmsaetningOgVareforbrug(double omsaetning, double vareforbrug) throws NegativBeloebException {
         this.omsaetning.angivBeloeb(omsaetning);
         this.vareforbrug.angivBeloeb(vareforbrug);
-        this.bruttofortjeneste.anvendOmsaetningOgVareforbrug(this.omsaetning, this.vareforbrug);
+        bruttofortjeneste.anvendOmsaetningOgVareforbrug(this.omsaetning, this.vareforbrug);
+        bruttofortjeneste.beregnBeloeb();
+    }
+
+    @Override
+    public void angivOmsaetning(Omsaetning omsaetning) {
+        this.omsaetning = omsaetning;
+        bruttofortjeneste.angivOmsaetning(this.omsaetning);
+    }
+
+    @Override
+    public void angivVareforbrug(Vareforbrug vareforbrug) {
+        this.vareforbrug = vareforbrug;
+        bruttofortjeneste.angivVareforbrug(this.vareforbrug);
+    }
+
+    @Override
+    public void beregnBruttofortjeneste() {
+        bruttofortjeneste.beregnBeloeb();
     }
 
     @Override

@@ -9,5 +9,5 @@ public interface BeregnVareforbrug {
     void angivIndkoebsprisOgAfsaetning(double indkoebspris, int afsaetning) throws NegativPrisException, NegativAntalException;
     void angivBruttofortjenesteOgOmsaetning(double bruttofortjeneste, double omsaetning) throws NegativBeloebException;
     void angivVarelagerPrimoOgVarekoebOgVarelagerUltimo(double varelagerPrimo, double varekoeb, double varelagerUltimo);
-    public Vareforbrug getVareforbrug();
+    Vareforbrug hentVareforbrug();
 }

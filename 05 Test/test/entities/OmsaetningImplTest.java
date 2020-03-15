@@ -135,7 +135,22 @@ class OmsaetningImplTest {
         public double beloeb = 12698;
 
         @Override
+        public void angivOmsaetning(Omsaetning omsaetning) {
+
+        }
+
+        @Override
+        public void angivVareforbrug(Vareforbrug vareforbrug) {
+
+        }
+
+        @Override
         public void angivBeloeb(double beloeb) {
+
+        }
+
+        @Override
+        public void beregnBeloeb() {
 
         }
 

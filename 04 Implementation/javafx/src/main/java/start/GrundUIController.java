@@ -259,7 +259,8 @@ public class GrundUIController {
         double tal = beregnBruttofortjeneste.hentBruttofortjeneste().hentBeloeb();
         String formatted = String.format("%.2f", tal);
         bruttofortjenesteResultatLabel.setText(formatted);
-        opdaterIndtjeningsbidrag();
+        beregnMarkedsfoeringsbidrag.beregnMarkedsfoeringsbidrag();
+        opdaterMarkedsfoeringsbidrag();
     }
 
     public void opdaterSSO() {

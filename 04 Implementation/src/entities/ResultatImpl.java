@@ -26,7 +26,12 @@ public class ResultatImpl implements Resultat {
         if (resultatFoerSkat == null) {
             return;
         }
-        beloeb = resultatFoerSkat.hentResultatFoerSkat() - (resultatFoerSkat.hentResultatFoerSkat() * skatteprocent.hentVaerdi() / 100);
+        if (resultatFoerSkat.hentResultatFoerSkat() < 0) {
+            beloeb = resultatFoerSkat.hentResultatFoerSkat();
+        }
+        else {
+            beloeb = resultatFoerSkat.hentResultatFoerSkat() - (resultatFoerSkat.hentResultatFoerSkat() * skatteprocent.hentVaerdi() / 100);
+        }
         observerManager.notificerObservere(this);
     }
 

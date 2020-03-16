@@ -19,6 +19,7 @@ public class KKOImpl implements KKO, Observable{
 
     public KKOImpl() {
         navn = "Kontante kapacitetsomkostninger";
+        foraeldersNavn = "Kontante kapacitetsomkostninger";
         observerManager = newObserverManager();
     }
 
@@ -64,7 +65,7 @@ public class KKOImpl implements KKO, Observable{
 
     @Override
     public boolean foraelderEksisterer(String foraeldersNavn) {
-        if (foraeldersNavn.equals(this.foraeldersNavn)) {
+        if (foraeldersNavn.equals(this.navn)) {
             return true;
         }
         else {

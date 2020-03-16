@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class BeregnKKOImpl implements BeregnKKO, Observable {
     ObserverManager observerManager;
     KKO kko;
+    ArrayList<KKO> listeAfKKO = new ArrayList<>();
     double sum = 0;
 
     public BeregnKKOImpl() {
@@ -31,6 +32,7 @@ public class BeregnKKOImpl implements BeregnKKO, Observable {
 
         KKO nykko = new KKOImpl(navn, beloeb, foraeldersNavn);
         kko.tilfoejKKO(nykko);
+        listeAfKKO.add(nykko);
         observerManager.notificerObservere(this);
 
     }
@@ -50,6 +52,7 @@ public class BeregnKKOImpl implements BeregnKKO, Observable {
 
         KKO nykko = new KKOImpl(navn, beloeb, foraeldersNavn,aendringstype, aendringssats);
         kko.tilfoejKKO(nykko);
+        listeAfKKO.add(nykko);
         observerManager.notificerObservere(this);
 
     }
@@ -65,7 +68,13 @@ public class BeregnKKOImpl implements BeregnKKO, Observable {
 
         KKO nykko = new KKOImpl(navn, foraeldersNavn);
         kko.tilfoejKKO(nykko);
+        listeAfKKO.add(nykko);
         observerManager.notificerObservere(this);
+    }
+
+    @Override
+    public KKO hentRodKKO() {
+        return kko;
     }
 
     @Override
@@ -85,6 +94,11 @@ public class BeregnKKOImpl implements BeregnKKO, Observable {
 
     protected ObserverManager newObserverManager() {
         return new ObserverManagerImpl();
+    }
+
+    @Override
+    public ArrayList<KKO> hentAlleKKO() {
+        return listeAfKKO;
     }
 
     @Override

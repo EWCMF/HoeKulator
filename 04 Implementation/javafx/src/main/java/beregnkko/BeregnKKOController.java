@@ -1,28 +1,42 @@
 package beregnkko;
 
 import beregnKKO.BeregnKKO;
+import entities.Aendringstype;
+import entities.KKO;
+import entities.exceptions.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import start.GrundUIController;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class BeregnKKOController {
     private GrundUIController grundUIController;
     private AendringstypeController aendringstypeController;
     private BeregnKKO beregnKKO;
     private String nuvaerendeAendringstype;
+    private TreeItem<String> kkoTraeRod;
+
+    @FXML
+    private TextField navnTf, beloebTf;
+
+    @FXML
+    private TreeView<String> kkoTreeView;
 
     @FXML
     private Pane aendringPane;
 
     @FXML
     private ChoiceBox<String> aendringChoiceBox;
+
+    @FXML
+    private ComboBox<String> gruppeComboBox;
 
     public void initialize() {
         aendringChoiceBox.getItems().addAll("Procentændring", "Beløbmæssig ændring", "Ingen ændring");
@@ -38,6 +52,9 @@ public class BeregnKKOController {
             }
         });
         aendringChoiceBox.getSelectionModel().select(0);
+
+        gruppeComboBox.getItems().add("Ingen");
+        gruppeComboBox.getSelectionModel().select(0);
     }
 
     public void skiftAendringstype(String aendringstype) throws IOException {
@@ -69,11 +86,80 @@ public class BeregnKKOController {
         }
     }
 
+    public void tilfoejTilKKOListe() throws NavnEksistererException, ForaelderEksistererIkkeException, ManglendeNavnException, ManglendeForaelderNavnException, NegativBeloebException {
+        String foraelderNavn;
+        if (!gruppeComboBox.getValue().equals("Ingen")) {
+            foraelderNavn = gruppeComboBox.getValue();
+        }
+        else {
+            foraelderNavn = "Kontante kapacitetsomkostninger";
+        }
+        switch (nuvaerendeAendringstype) {
+            case "Procentændring":
+                String navn = navnTf.getText();
+                double beloeb = Double.parseDouble(beloebTf.getText());
+                Aendringstype aendringstype = Aendringstype.PROCENTAENDRING;
+                double aendringssats = Double.parseDouble(aendringstypeController.getProcentTf().getText());
+                beregnKKO.angivKKO(navn, beloeb, foraelderNavn, aendringstype, aendringssats);
+                break;
+            case "Beløbmæssig ændring":
+                navn = navnTf.getText();
+                beloeb = Double.parseDouble(beloebTf.getText());
+                aendringstype = Aendringstype.BELOEBMAESSIG_AENDRING;
+                aendringssats = Double.parseDouble(aendringstypeController.getBeloebTF().getText());
+                beregnKKO.angivKKO(navn, beloeb, foraelderNavn, aendringstype, aendringssats);
+                break;
+            case "Ingen ændring":
+                navn = navnTf.getText();
+                beloeb = Double.parseDouble(beloebTf.getText());
+                beregnKKO.angivKKO(navn, beloeb, foraelderNavn);
+                break;
+        }
+        updateTree();
+    }
+
+    public void tilfoejGruppe() throws NavnEksistererException, ForaelderEksistererIkkeException, ManglendeNavnException, ManglendeForaelderNavnException {
+        if (gruppeComboBox.getValue().equals("Ingen")) {
+            return;
+        }
+        beregnKKO.angivKKO(gruppeComboBox.getValue(), "Kontante kapacitetsomkostninger");
+        updateTree();
+    }
+
+    public void updateTree() {
+        ArrayList<KKO> listeAfKKO = beregnKKO.hentAlleKKO();
+        kkoTraeRod.getChildren().clear();
+        for (KKO kko : listeAfKKO) {
+            TreeItem<String> kkoLeaf = new TreeItem<>(kko.hentNavn());
+            boolean found = false;
+            if (kko.hentForaeldersNavn().equals(kkoTraeRod.getValue())) {
+                kkoTraeRod.getChildren().add(kkoLeaf);
+            }
+            else {
+                for (TreeItem<String> gruppeNode : kkoTraeRod.getChildren()) {
+                    if (gruppeNode.getValue().contentEquals(kko.hentForaeldersNavn())) {
+                        gruppeNode.getChildren().add(kkoLeaf);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    TreeItem<String> gruppeNode = new TreeItem<>(kko.hentForaeldersNavn());
+                    kkoTraeRod.getChildren().add(gruppeNode);
+                    gruppeNode.getChildren().add(kkoLeaf);
+                }
+            }
+        }
+    }
+
     public void setGrundUIController(GrundUIController grundUIController) {
         this.grundUIController = grundUIController;
     }
 
     public void setBeregnKKO(BeregnKKO beregnKKO) {
         this.beregnKKO = beregnKKO;
+        kkoTraeRod = new TreeItem<> (this.beregnKKO.hentRodKKO().hentNavn());
+        kkoTraeRod.setExpanded(true);
+        kkoTreeView.setRoot(kkoTraeRod);
     }
 }

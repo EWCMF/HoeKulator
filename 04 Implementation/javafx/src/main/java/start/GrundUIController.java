@@ -8,6 +8,7 @@ import beregnbruttofortjeneste.BeregnBruttofortjenesteImpl;
 import beregnindtjeningsbidrag.BeregnIndtjeningsbidrag;
 import beregnindtjeningsbidrag.BeregnIndtjeningsbidragController;
 import beregnindtjeningsbidrag.BeregnIndtjeningsbidragImpl;
+import beregnkko.BeregnKKOController;
 import beregnmarkedsfoeringsbidrag.BeregnMarkedsfoeringsbidrag;
 import beregnmarkedsfoeringsbidrag.BeregnMarkedsfoeringsbidragImpl;
 import beregnmarkedsfoeringsbidrag.BeregnMarkedsfoeringsbidragController;
@@ -93,6 +94,7 @@ public class GrundUIController {
         loadVareforbrug();
         loadBruttofortjeneste();
         loadMarkedsfoeringsbidrag();
+        loadKKO();
         loadIndtjeningsbidrag();
         loadAfskrivning();
         loadRenteintaegter();
@@ -134,6 +136,15 @@ public class GrundUIController {
         beregnMarkedsfoeringsbidragController.setGrundUIController(this);
         beregnMarkedsfoeringsbidragController.setBeregnMarkedsfoeringsbidrag(beregnMarkedsfoeringsbidrag);
         markedsfoeringsbidragPane.getChildren().add(node);
+    }
+
+    public void loadKKO() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../beregnkko/kontante_kapacitetsomkostninger.fxml"));
+        Node node = fxmlLoader.load();
+        BeregnKKOController beregnKKOController = fxmlLoader.getController();
+        beregnKKOController.setGrundUIController(this);
+        beregnKKOController.setBeregnKKO(beregnKKO);
+        kkoPane.getChildren().add(node);
     }
 
     public void loadIndtjeningsbidrag() throws IOException {

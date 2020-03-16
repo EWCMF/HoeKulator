@@ -102,7 +102,7 @@
             </TitledPane>
             <TitledPane expanded="false" stylesheets="/TitlePane2.css">
               <content>
-                  <Pane fx:id="kkoPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="1288.0">
+                  <Pane fx:id="kkoPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="1288.0">
                       <children>
                       </children>
                   </Pane>

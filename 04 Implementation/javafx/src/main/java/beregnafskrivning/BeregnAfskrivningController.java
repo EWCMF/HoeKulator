@@ -57,7 +57,7 @@ public class BeregnAfskrivningController {
 
     private void aendreMetode(String metode) throws IOException {
         FXMLLoader loader = null;
-        Node node = null;
+        Node node;
         switch (metode) {
             case "Lineær Afskrivning":
                 loader = new FXMLLoader(getClass().getResource("Lineaer_afskrivning.fxml"));

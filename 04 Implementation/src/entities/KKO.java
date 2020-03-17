@@ -16,4 +16,6 @@ public interface KKO {
     KKO hentKKO(String navn);
     ArrayList<KKO> hentEfterfoelgere();
     double hentBeloeb();
+    Aendringstype hentAendringstype();
+    double hentAendringssats();
 }

@@ -38,6 +38,7 @@ public class KKOImpl implements KKO, Observable{
     public KKOImpl(String navn, double beloeb, String foraeldersNavn) throws ManglendeNavnException, ManglendeForaelderNavnException {
         this(navn, foraeldersNavn);
         this.beloeb = beloeb;
+        aendringstype = Aendringstype.INGEN;
         observerManager = newObserverManager();
     }
 
@@ -94,13 +95,13 @@ public class KKOImpl implements KKO, Observable{
         }
         else {
             for (int i = 0; i < efterfoelgere.size(); i++) {
-                if (navnEksisterer(nyKKO.hentNavn())) {
+                if (efterfoelgere.get(i).navnEksisterer(nyKKO.hentNavn())) {
                     throw new NavnEksistererException();
                 }
-                if (!foraelderEksisterer(nyKKO.hentForaeldersNavn())) {
-                    throw new ForaelderEksistererIkkeException();
-                }
-                ((KKOImpl) efterfoelgere.get(i)).tilfoejGaranteretUnikOgForaelderhavendeKKO(nyKKO);
+//                if (!efterfoelgere.get(i).foraelderEksisterer(nyKKO.hentForaeldersNavn())) {
+//                    throw new ForaelderEksistererIkkeException();
+//                }
+                efterfoelgere.get(i).tilfoejKKO(nyKKO);
             }
         }
     }
@@ -148,6 +149,16 @@ public class KKOImpl implements KKO, Observable{
     @Override
     public double hentBeloeb() {
         return beloeb;
+    }
+
+    @Override
+    public Aendringstype hentAendringstype() {
+        return aendringstype;
+    }
+
+    @Override
+    public double hentAendringssats() {
+        return aendringssats;
     }
 
 

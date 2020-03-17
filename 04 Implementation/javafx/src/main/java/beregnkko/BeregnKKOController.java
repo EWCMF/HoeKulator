@@ -3,13 +3,17 @@ package beregnkko;
 import beregnKKO.BeregnKKO;
 import entities.Aendringstype;
 import entities.KKO;
+import entities.Observable;
+import entities.Observer;
 import entities.exceptions.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import start.GrundUIController;
 
@@ -24,7 +28,7 @@ public class BeregnKKOController {
     private TreeItem<String> kkoTraeRod;
 
     @FXML
-    private TextField navnTf, beloebTf;
+    private TextField navnTf, beloebTf, kkoTf;
 
     @FXML
     private TreeView<String> kkoTreeView;
@@ -130,7 +134,7 @@ public class BeregnKKOController {
         ArrayList<KKO> listeAfKKO = beregnKKO.hentAlleKKO();
         kkoTraeRod.getChildren().clear();
         for (KKO kko : listeAfKKO) {
-            TreeItem<String> kkoLeaf = new TreeItem<>(kko.hentNavn());
+            TreeItem<String> kkoLeaf = lavPassendeKKOUI(kko);
             boolean found = false;
             if (kko.hentForaeldersNavn().equals(kkoTraeRod.getValue())) {
                 kkoTraeRod.getChildren().add(kkoLeaf);
@@ -152,6 +156,35 @@ public class BeregnKKOController {
         }
     }
 
+    private TreeItem<String> lavPassendeKKOUI(KKO kko) {
+        if (kko.hentAendringstype() != null) {
+            switch (kko.hentAendringstype()) {
+                case INGEN:
+                    Label labelMedPadding = new Label(kko.hentNavn());
+                    labelMedPadding.setPadding(new Insets(0, 16, 0, 0));
+                    HBox hBox = new HBox(labelMedPadding, new Label(String.format("%.2f", kko.hentBeloeb())));
+                    TreeItem<String> treeItem = new TreeItem<>("");
+                    treeItem.setGraphic(hBox);
+                    return treeItem;
+                case PROCENTAENDRING:
+                    labelMedPadding = new Label(kko.hentNavn());
+                    labelMedPadding.setPadding(new Insets(0, 16, 0, 0));
+                    hBox = new HBox(labelMedPadding, new Label(String.format("%.2f", kko.hentBeloeb() * (kko.hentAendringssats() / 100 + 1))));
+                    treeItem = new TreeItem<>("");
+                    treeItem.setGraphic(hBox);
+                    return treeItem;
+                case BELOEBMAESSIG_AENDRING:
+                    labelMedPadding = new Label(kko.hentNavn());
+                    labelMedPadding.setPadding(new Insets(0, 16, 0, 0));
+                    hBox = new HBox(labelMedPadding, new Label(String.format("%.2f", kko.hentBeloeb() + kko.hentAendringssats())));
+                    treeItem = new TreeItem<>("");
+                    treeItem.setGraphic(hBox);
+                    return treeItem;
+            }
+        }
+        return new TreeItem<>(kko.hentNavn());
+    }
+
     public void setGrundUIController(GrundUIController grundUIController) {
         this.grundUIController = grundUIController;
     }
@@ -161,5 +194,12 @@ public class BeregnKKOController {
         kkoTraeRod = new TreeItem<> (this.beregnKKO.hentRodKKO().hentNavn());
         kkoTraeRod.setExpanded(true);
         kkoTreeView.setRoot(kkoTraeRod);
+
+        beregnKKO.tilmeldObserver(new Observer() {
+            @Override
+            public void opdater(Observable observable) {
+                kkoTf.setText(String.format("%.2f", beregnKKO.hentAlleBeloeb()));
+            }
+        });
     }
 }

@@ -5,7 +5,7 @@ import entities.exceptions.*;
 
 import java.util.ArrayList;
 
-public class BeregnKKOImpl implements BeregnKKO, Observable {
+public class BeregnKKOImpl implements BeregnKKO {
     ObserverManager observerManager;
     KKO kko;
     ArrayList<KKO> listeAfKKO = new ArrayList<>();
@@ -37,7 +37,7 @@ public class BeregnKKOImpl implements BeregnKKO, Observable {
 
     }
 
-    public void angivKKO(String navn, double beloeb, String foraeldersNavn,Aendringstype aendringstype, double aendringssats) throws NegativBeloebException, NavnEksistererException, ForaelderEksistererIkkeException, ManglendeForaelderNavnException, ManglendeNavnException {
+    public void angivKKO(String navn, double beloeb, String foraeldersNavn, Aendringstype aendringstype, double aendringssats) throws NegativBeloebException, NavnEksistererException, ForaelderEksistererIkkeException, ManglendeForaelderNavnException, ManglendeNavnException {
         if (beloeb < 0) {
             throw new NegativBeloebException("Beløbet må ikke være negativt");
         }
@@ -50,7 +50,7 @@ public class BeregnKKOImpl implements BeregnKKO, Observable {
             throw new ForaelderEksistererIkkeException();
         }
 
-        KKO nykko = new KKOImpl(navn, beloeb, foraeldersNavn,aendringstype, aendringssats);
+        KKO nykko = new KKOImpl(navn, beloeb, foraeldersNavn, aendringstype, aendringssats);
         kko.tilfoejKKO(nykko);
         listeAfKKO.add(nykko);
         observerManager.notificerObservere(this);
@@ -103,6 +103,7 @@ public class BeregnKKOImpl implements BeregnKKO, Observable {
 
     @Override
     public double hentAlleBeloeb() {
+        sum = 0;
         hentAlleBeloeb(kko);
         return sum;
     }

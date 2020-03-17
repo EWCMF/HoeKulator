@@ -130,6 +130,10 @@ public class BeregnKKOController {
         updateTree();
     }
 
+    public void opdaterResultatBudget() {
+        grundUIController.opdaterKKO();
+    }
+
     public void updateTree() {
         ArrayList<KKO> listeAfKKO = beregnKKO.hentAlleKKO();
         kkoTraeRod.getChildren().clear();
@@ -199,6 +203,7 @@ public class BeregnKKOController {
             @Override
             public void opdater(Observable observable) {
                 kkoTf.setText(String.format("%.2f", beregnKKO.hentAlleBeloeb()));
+                opdaterResultatBudget();
             }
         });
     }

@@ -148,6 +148,16 @@ public class SFOImpl implements SFO {
 
     @Override
     public double hentBeloeb() {
+        if (aendringstype != null) {
+            switch (aendringstype) {
+                case INGEN:
+                    return beloeb;
+                case BELOEBMAESSIG_AENDRING:
+                    return beloeb + aendringssats;
+                case PROCENTAENDRING:
+                    return beloeb * (aendringssats / 100 + 1);
+            }
+        }
         return beloeb;
     }
 

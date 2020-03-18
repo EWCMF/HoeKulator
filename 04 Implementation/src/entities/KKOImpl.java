@@ -148,6 +148,16 @@ public class KKOImpl implements KKO, Observable{
 
     @Override
     public double hentBeloeb() {
+        if (aendringstype != null) {
+            switch (aendringstype) {
+                case INGEN:
+                    return beloeb;
+                case BELOEBMAESSIG_AENDRING:
+                    return beloeb + aendringssats;
+                case PROCENTAENDRING:
+                    return beloeb * (aendringssats / 100 + 1);
+            }
+        }
         return beloeb;
     }
 

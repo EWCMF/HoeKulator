@@ -138,7 +138,7 @@ public class BeregnKKOController {
         ArrayList<KKO> listeAfKKO = beregnKKO.hentAlleKKO();
         kkoTraeRod.getChildren().clear();
         for (KKO kko : listeAfKKO) {
-            TreeItem<String> kkoLeaf = lavPassendeKKOUI(kko);
+            TreeItem<String> kkoLeaf = lavKKOUI(kko);
             boolean found = false;
             if (kko.hentForaeldersNavn().equals(kkoTraeRod.getValue())) {
                 kkoTraeRod.getChildren().add(kkoLeaf);
@@ -160,31 +160,14 @@ public class BeregnKKOController {
         }
     }
 
-    private TreeItem<String> lavPassendeKKOUI(KKO kko) {
+    private TreeItem<String> lavKKOUI(KKO kko) {
         if (kko.hentAendringstype() != null) {
-            switch (kko.hentAendringstype()) {
-                case INGEN:
-                    Label labelMedPadding = new Label(kko.hentNavn());
-                    labelMedPadding.setPadding(new Insets(0, 16, 0, 0));
-                    HBox hBox = new HBox(labelMedPadding, new Label(String.format("%.2f", kko.hentBeloeb())));
-                    TreeItem<String> treeItem = new TreeItem<>("");
-                    treeItem.setGraphic(hBox);
-                    return treeItem;
-                case PROCENTAENDRING:
-                    labelMedPadding = new Label(kko.hentNavn());
-                    labelMedPadding.setPadding(new Insets(0, 16, 0, 0));
-                    hBox = new HBox(labelMedPadding, new Label(String.format("%.2f", kko.hentBeloeb() * (kko.hentAendringssats() / 100 + 1))));
-                    treeItem = new TreeItem<>("");
-                    treeItem.setGraphic(hBox);
-                    return treeItem;
-                case BELOEBMAESSIG_AENDRING:
-                    labelMedPadding = new Label(kko.hentNavn());
-                    labelMedPadding.setPadding(new Insets(0, 16, 0, 0));
-                    hBox = new HBox(labelMedPadding, new Label(String.format("%.2f", kko.hentBeloeb() + kko.hentAendringssats())));
-                    treeItem = new TreeItem<>("");
-                    treeItem.setGraphic(hBox);
-                    return treeItem;
-            }
+            Label labelMedPadding = new Label(kko.hentNavn());
+            labelMedPadding.setPadding(new Insets(0, 16, 0, 0));
+            HBox hBox = new HBox(labelMedPadding, new Label(String.format("%.2f", kko.hentBeloeb())));
+            TreeItem<String> treeItem = new TreeItem<>("");
+            treeItem.setGraphic(hBox);
+            return treeItem;
         }
         return new TreeItem<>(kko.hentNavn());
     }

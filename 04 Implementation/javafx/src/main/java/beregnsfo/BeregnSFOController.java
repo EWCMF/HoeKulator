@@ -134,7 +134,7 @@ public class BeregnSFOController {
         ArrayList<SFO> listeAfSFO = beregnSFO.hentAlleSFO();
         ssoTraeRod.getChildren().clear();
         for (SFO sfo : listeAfSFO) {
-            TreeItem<String> kkoLeaf = lavPassendeSFOUI(sfo);
+            TreeItem<String> kkoLeaf = lavSFOUI(sfo);
             boolean found = false;
             if (sfo.hentForaeldersNavn().equals(ssoTraeRod.getValue())) {
                 ssoTraeRod.getChildren().add(kkoLeaf);
@@ -156,34 +156,18 @@ public class BeregnSFOController {
         }
     }
 
-    private TreeItem<String> lavPassendeSFOUI(SFO sfo) {
+    private TreeItem<String> lavSFOUI(SFO sfo) {
         if (sfo.hentAendringstype() != null) {
-            switch (sfo.hentAendringstype()) {
-                case INGEN:
-                    Label labelMedPadding = new Label(sfo.hentNavn());
-                    labelMedPadding.setPadding(new Insets(0, 16, 0, 0));
-                    HBox hBox = new HBox(labelMedPadding, new Label(String.format("%.2f", sfo.hentBeloeb())));
-                    TreeItem<String> treeItem = new TreeItem<>("");
-                    treeItem.setGraphic(hBox);
-                    return treeItem;
-                case PROCENTAENDRING:
-                    labelMedPadding = new Label(sfo.hentNavn());
-                    labelMedPadding.setPadding(new Insets(0, 16, 0, 0));
-                    hBox = new HBox(labelMedPadding, new Label(String.format("%.2f", sfo.hentBeloeb() * (sfo.hentAendringssats() / 100 + 1))));
-                    treeItem = new TreeItem<>("");
-                    treeItem.setGraphic(hBox);
-                    return treeItem;
-                case BELOEBMAESSIG_AENDRING:
-                    labelMedPadding = new Label(sfo.hentNavn());
-                    labelMedPadding.setPadding(new Insets(0, 16, 0, 0));
-                    hBox = new HBox(labelMedPadding, new Label(String.format("%.2f", sfo.hentBeloeb() + sfo.hentAendringssats())));
-                    treeItem = new TreeItem<>("");
-                    treeItem.setGraphic(hBox);
-                    return treeItem;
-            }
+            Label labelMedPadding = new Label(sfo.hentNavn());
+            labelMedPadding.setPadding(new Insets(0, 16, 0, 0));
+            HBox hBox = new HBox(labelMedPadding, new Label(String.format("%.2f", sfo.hentBeloeb())));
+            TreeItem<String> treeItem = new TreeItem<>("");
+            treeItem.setGraphic(hBox);
+            return treeItem;
         }
         return new TreeItem<>(sfo.hentNavn());
     }
+
 
     public void setGrundUIController(GrundUIController grundUIController) {
         this.grundUIController = grundUIController;

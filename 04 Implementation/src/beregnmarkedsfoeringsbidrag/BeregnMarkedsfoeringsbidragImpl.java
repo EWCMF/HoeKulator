@@ -1,24 +1,24 @@
 package beregnmarkedsfoeringsbidrag;
 
-import beregnsso.BeregnSSO;
-import beregnsso.BeregnSSOImpl;
+import beregnsfo.BeregnSFO;
+import beregnsfo.BeregnSFOImpl;
 import entities.*;
 import entities.exceptions.NegativBeloebException;
 
 public class BeregnMarkedsfoeringsbidragImpl implements BeregnMarkedsfoeringsbidrag {
-    private BeregnSSO sso;
+    private BeregnSFO sfo;
     private Bruttofortjeneste bruttofortjeneste;
     private Markedsfoeringsbidrag markedsfoeringsbidrag;
 
     public BeregnMarkedsfoeringsbidragImpl() {
-        sso = new BeregnSSOImpl();
+        sfo = new BeregnSFOImpl();
         bruttofortjeneste = new BruttofortjenesteImpl();
         markedsfoeringsbidrag = new MarkedsfoeringsbidragImpl();
     }
 
     @Override
-    public void angivSSO(BeregnSSO sso) {
-        this.sso = sso;
+    public void angivSSO(BeregnSFO sfo) {
+        this.sfo = sfo;
     }
 
     @Override
@@ -27,16 +27,16 @@ public class BeregnMarkedsfoeringsbidragImpl implements BeregnMarkedsfoeringsbid
     }
 
     @Override
-    public void angivBruttofortjenesteOgSSO(double bruttofortjeneste, double sso) throws NegativBeloebException {
+    public void angivBruttofortjenesteOgSSO(double bruttofortjeneste, double sfo) throws NegativBeloebException {
         this.bruttofortjeneste.angivBeloeb(bruttofortjeneste);
-        this.sso.angivSum(sso);
+        this.sfo.angivSum(sfo);
         beregnMarkedsfoeringsbidrag();
     }
 
     @Override
     public void beregnMarkedsfoeringsbidrag() {
-        if (sso != null && bruttofortjeneste != null) {
-            markedsfoeringsbidrag.angivBeloeb(bruttofortjeneste.hentBeloeb() - sso.hentSum());
+        if (sfo != null && bruttofortjeneste != null) {
+            markedsfoeringsbidrag.angivBeloeb(bruttofortjeneste.hentBeloeb() - sfo.hentAlleBeloeb());
         }
     }
 

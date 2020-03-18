@@ -23,8 +23,9 @@ import beregnresultatfoerskat.BeregnRenteomkostningerController;
 import beregnresultatfoerskat.BeregnResultatFoerSkat;
 import beregnresultatfoerskat.BeregnResultatFoerSkatImpl;
 import beregnbruttofortjeneste.BeregnBruttofortjenesteController;
-import beregnsso.BeregnSSO;
-import beregnsso.BeregnSSOImpl;
+import beregnsfo.BeregnSFO;
+import beregnsfo.BeregnSFOController;
+import beregnsfo.BeregnSFOImpl;
 import beregnvareforbrug.BeregnVareforbrugController;
 import beregnvareforbrug.BeregnVareforbrugImpl;
 import entities.Afskrivning;
@@ -46,7 +47,7 @@ public class GrundUIController {
     private BeregnOmsaetningImpl beregnOmsaetning;
     private BeregnVareforbrugImpl beregnVareforbrug;
     private BeregnBruttofortjenesteImpl beregnBruttofortjeneste;
-    private BeregnSSO beregnSSO;
+    private BeregnSFO beregnSFO;
     private BeregnMarkedsfoeringsbidrag beregnMarkedsfoeringsbidrag;
     private BeregnKKO beregnKKO;
     private BeregnIndtjeningsbidrag beregnIndtjeningsbidrag;
@@ -57,7 +58,7 @@ public class GrundUIController {
 
     @FXML
     private Label omsaetningResultatLabel, vareforbrugResultatLabel, bruttofortjenesteResultatLabel,
-            ssoResultatLabel, markedsfoeringsbidragResultatLabel, kkoResultatLabel,
+            sfoResultatLabel, markedsfoeringsbidragResultatLabel, kkoResultatLabel,
             afskrivningResultatLabel, indtjeningsbidragResultatLabel, resultatFoerRenterResultatLabel,
             renteindtaegterResultatLabel, renteomkostningerResultatLabel, resultatFoerSkatResultatLabel,
             skatteprocentResultatLabel, resultatResultatLabel;
@@ -66,7 +67,7 @@ public class GrundUIController {
     private Pane omsaetningPane, vareforbrugPane, bruttofortjenestePane,
             afskrivningPane, indtjeningsbidragPane, renteindtaegterPane,
             renteomkostningerPane, skatteprocentPane, kkoPane, markedsfoeringsbidragPane,
-            ssoPane;
+            sfoPane;
 
     public GrundUIController() {
     }
@@ -77,10 +78,10 @@ public class GrundUIController {
         beregnBruttofortjeneste = new BeregnBruttofortjenesteImpl();
         beregnBruttofortjeneste.angivOmsaetning(beregnOmsaetning.hentOmsaetning());
         beregnBruttofortjeneste.angivVareforbrug(beregnVareforbrug.hentVareforbrug());
-        beregnSSO = new BeregnSSOImpl();
+        beregnSFO = new BeregnSFOImpl();
         beregnMarkedsfoeringsbidrag = new BeregnMarkedsfoeringsbidragImpl();
         beregnMarkedsfoeringsbidrag.angivBruttofortjeneste(beregnBruttofortjeneste.hentBruttofortjeneste());
-        beregnMarkedsfoeringsbidrag.angivSSO(beregnSSO);
+        beregnMarkedsfoeringsbidrag.angivSSO(beregnSFO);
         beregnKKO = new BeregnKKOImpl();
         beregnIndtjeningsbidrag = new BeregnIndtjeningsbidragImpl();
         beregnIndtjeningsbidrag.angivMarkedsfoeringsBidrag(beregnMarkedsfoeringsbidrag.hentMarkedsfoeringsbidrag());
@@ -93,6 +94,7 @@ public class GrundUIController {
         loadOmsaetning();
         loadVareforbrug();
         loadBruttofortjeneste();
+        loadSalgsfremmendeOmkostninger();
         loadMarkedsfoeringsbidrag();
         loadKKO();
         loadIndtjeningsbidrag();
@@ -127,6 +129,15 @@ public class GrundUIController {
         beregnVareforbrugController.setGrundUIController(this);
         beregnVareforbrugController.setBeregnVareforbrug(beregnVareforbrug);
         vareforbrugPane.getChildren().add(node);
+    }
+
+    public void loadSalgsfremmendeOmkostninger() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../beregnsfo/salgsfremmende_omkostninger.fxml"));
+        Node node = fxmlLoader.load();
+        BeregnSFOController beregnSFOController = fxmlLoader.getController();
+        beregnSFOController.setGrundUIController(this);
+        beregnSFOController.setBeregnSFO(beregnSFO);
+        sfoPane.getChildren().add(node);
     }
 
     public void loadMarkedsfoeringsbidrag() throws IOException {
@@ -274,10 +285,12 @@ public class GrundUIController {
         opdaterMarkedsfoeringsbidrag();
     }
 
-    public void opdaterSSO() {
-        double tal = beregnSSO.hentSum();
+    public void opdaterSFO() {
+        double tal = beregnSFO.hentAlleBeloeb();
         String formatted = String.format("%.2f", tal);
-        ssoResultatLabel.setText(formatted);
+        sfoResultatLabel.setText(formatted);
+        beregnMarkedsfoeringsbidrag.beregnMarkedsfoeringsbidrag();
+        opdaterMarkedsfoeringsbidrag();
     }
 
     public void advarselBruttofortjenesteOgSSO() {
@@ -296,6 +309,7 @@ public class GrundUIController {
         double tal = beregnKKO.hentAlleBeloeb();
         String formatted = String.format("%.2f", tal);
         kkoResultatLabel.setText(formatted);
+        opdaterIndtjeningsbidrag();
     }
 
     public void opdaterIndtjeningsbidrag() {

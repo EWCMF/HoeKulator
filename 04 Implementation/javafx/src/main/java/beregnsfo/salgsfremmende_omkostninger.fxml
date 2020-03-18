@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="370.0" prefWidth="1225.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="beregnsfo.BeregnSFOController">
+   <children>
+      <Pane prefHeight="133.0" prefWidth="1060.0" AnchorPane.leftAnchor="14.0">
+         <children>
+            <TextField fx:id="navnTf" layoutY="26.0" prefHeight="28.0" prefWidth="160.0" />
+            <TextField fx:id="beloebTf" layoutX="174.0" layoutY="26.0" prefHeight="28.0" prefWidth="160.0" />
+            <ChoiceBox fx:id="aendringChoiceBox" layoutX="348.0" layoutY="26.0" prefHeight="28.0" prefWidth="160.0" />
+            <Label layoutY="11.0" text="Navn:">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="174.0" layoutY="11.0" text="Beløb:">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="348.0" layoutY="11.0" text="Ændring:">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Label>
+            <Pane fx:id="aendringPane" layoutX="508.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="68.0" prefWidth="190.0">
+               <children>
+                  <TextField alignment="CENTER_RIGHT" layoutX="14.0" layoutY="26.0" prefHeight="28.0" prefWidth="160.0" />
+                  <Label layoutX="14.0" layoutY="11.0" text="Procentændring:">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Label layoutX="820.0" layoutY="11.0" text="Salgsfremmende omkostninger">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="sfoTf" alignment="CENTER_RIGHT" editable="false" layoutX="820.0" layoutY="26.0" prefHeight="28.0" prefWidth="240.0" />
+            <Label layoutY="68.0" text="Gruppe">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="gruppeComboBox" editable="true" layoutY="85.0" prefHeight="26.0" prefWidth="160.0" />
+            <Button layoutX="174.0" layoutY="85.0" mnemonicParsing="false" onAction="#tilfoejGruppe" prefHeight="26.0" prefWidth="120.0" text="Tilføj gruppe" />
+         </children>
+      </Pane>
+      <Button layoutX="1140.0" layoutY="26.0" mnemonicParsing="false" onAction="#tilfoejTilSSOListe" prefHeight="26.0" prefWidth="120.0" text="Tilføj/opdater" AnchorPane.rightAnchor="14.0" />
+      <TreeView fx:id="sfoTreeView" layoutX="14.0" layoutY="68.0" prefHeight="230.0" prefWidth="402.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" />
+   </children>
+</AnchorPane>

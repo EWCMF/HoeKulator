@@ -24,7 +24,7 @@ public class BeregnMarkedsfoeringsbidragController {
         double ssoInput = Double.parseDouble(ssoTf.getText());
         beregnMarkedsfoeringsbidrag.angivBruttofortjenesteOgSSO(bruttofortjenesteInput, ssoInput);
         grundUIController.opdaterMarkedsfoeringsbidrag();
-        grundUIController.opdaterSSO();
+        grundUIController.opdaterSFO();
         grundUIController.opdaterBruttofortjeneste();
         grundUIController.advarselOmsaetningOgVareforbrug();
     }

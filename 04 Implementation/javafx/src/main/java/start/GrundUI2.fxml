@@ -68,7 +68,7 @@
             </TitledPane>
             <TitledPane expanded="false" stylesheets="/TitlePane2.css">
               <content>
-                  <Pane fx:id="ssoPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="1288.0">
+                  <Pane fx:id="sfoPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="370" minWidth="-Infinity" prefWidth="1288.0">
                       <children>
                       </children>
                   </Pane>
@@ -78,7 +78,7 @@
                      <children>
                         <Label text="-Salgsfremmende omkostninger" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label fx:id="ssoResultatLabel" text="0.00" />
+                        <Label fx:id="sfoResultatLabel" text="0.00" />
                      </children>
                   </HBox>
                </graphic>
